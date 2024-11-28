@@ -9,7 +9,6 @@ const routes = [
   {
     path: "/task-listing",
     component: () => import("../views/TaskListing/TaskListing.vue"),
-    props: { msg: "Heyy" },
   },
   {
     path: "/:pathMatch(.*)*",

@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\UsersController;
+use App\Http\Controllers\API\TokenController;
 use App\Http\Controllers\API\TaskController;
 
 Route::get('/user', function (Request $request) {
@@ -10,5 +10,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-// Route::apiResource("users", UsersController::class);
-Route::apiResource("items", TaskController::class);
+Route::middleware('auth:sanctum')->apiResource("items", TaskController::class);
+
+// user login and generate token
+Route::post('/authorize', [TokenController::class, 'authorize']);
