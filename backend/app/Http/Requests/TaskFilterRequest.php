@@ -15,6 +15,7 @@ class TaskFilterRequest extends FormRequest
     }
     
     public function prepareForValidation(){
+        // convert string into boolean
         $this->merge([
             'excact_title_search' => filter_var($this->excact_title_search, FILTER_VALIDATE_BOOLEAN),
         ]);
