@@ -16,8 +16,8 @@ class Task extends Model
     protected $table = "task";
     protected $fillable = ['title', 'description', 'created_by', 'due_date'];
 
-    private $defaultPageSize = 10;
-    private $defaultPage = 1;
+    private static $defaultPageSize = 10;
+    private static $defaultPage = 1;
 
     public static function getTasksByFilterAndPagination(array $filter)
     {
@@ -38,6 +38,17 @@ class Task extends Model
             return $page;
         });
 
-        return TaskResource::collection($query->paginate($pageSize)->items());;
+        $tasks = $query->paginate($pageSize);
+
+        return TaskResource::collection($tasks->items())->additional([
+            'page_details' => [
+                'current_page' => $tasks->currentPage(),
+                'page_size' => $tasks->perPage(),
+                'total' => $tasks->total(),
+                'last_page' => $tasks->lastPage(),
+                'next_page_url' => $tasks->nextPageUrl(),
+                'prev_page_url' => $tasks->previousPageUrl(),
+            ],
+        ]);
     }
 }
