@@ -1,12 +1,12 @@
-import axios from 'axios';
-import store from '../../store'
+import axios from "axios";
+import store from "../../store";
 
 const axiosInstance = axios.create({
-  baseURL: 'https://api.example.com',
-  timeout: 10000, 
+  baseURL: "https://86mwsr-8000.csb.app/",
+  timeout: 10000,
   headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    "Content-Type": "application/json",
+    Accept: "application/json",
   },
 });
 
@@ -15,7 +15,7 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const token = store.getters.getToken;
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
@@ -36,12 +36,8 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-function _handleRequestResponseError(){
+function _handleRequestResponseError() {}
 
-}
-
-function _handleRequestSuccess(){
-
-}
+function _handleRequestSuccess() {}
 
 export default axiosInstance;

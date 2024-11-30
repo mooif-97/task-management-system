@@ -13,4 +13,4 @@ Route::get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->apiResource("items", TaskController::class);
 
 // user login and generate token
-Route::post('/authorize', [TokenController::class, 'authorize']);
+Route::post('/authenticate', [TokenController::class, 'authenticate']);

@@ -10,7 +10,7 @@ use App\Models\User;
 
 class TokenController extends Controller
 {
-    public function authorize(Request $request)
+    public function authenticate(Request $request)
     {
         $request->validate([
             'user_id' => 'required|string',
