@@ -43,7 +43,7 @@ class TaskResource extends JsonResource
         }
 
         if ($dueDate->diffInDays($now) <= 7) {
-            return 'Due soon';
+            return 'Due Soon';
         }
 
         return $defaultStatus;

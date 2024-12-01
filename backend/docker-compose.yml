@@ -12,8 +12,8 @@ services:
   postgres:
     image: postgres:latest
     environment:
-      POSTGRES_USER: veve
-      POSTGRES_PASSWORD: veve
+      POSTGRES_USER: myDB
+      POSTGRES_PASSWORD: myDB
       POSTGRES_DB: example_app_DB
     ports:
       - "5500:5432"

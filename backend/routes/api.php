@@ -9,8 +9,10 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-
-Route::middleware('auth:sanctum')->apiResource("items", TaskController::class);
+// Route::middleware('auth:sanctum')->apiResource("items", TaskController::class);
+Route::middleware('auth:sanctum')->post('/items-by-pagination', [TaskController::class, 'index']);
+Route::middleware('auth:sanctum')->post('/items', [TaskController::class, 'store']);
+Route::middleware('auth:sanctum')->patch('/items', [TaskController::class, 'update']);
 
 // user login and generate token
-Route::post('/authorize', [TokenController::class, 'authorize']);
+Route::post('/authenticate', [TokenController::class, 'authenticate']);
