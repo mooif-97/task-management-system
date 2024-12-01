@@ -29,10 +29,12 @@ class TaskFilterRequest extends FormRequest
     public function rules(): array
     {
         return  [
-            'page' => 'nullable|numeric',
-            'page_size' => 'nullable|numeric',
+            'page' => 'nullable|numeric|min:1',
+            'page_size' => 'nullable|numeric|min:1',
             'title_search' => 'nullable|string',
-            'excact_title_search' => 'nullable|boolean'
+            'excact_title_search' => 'nullable|boolean',
+            'order_by' => 'nullable|string',
+            'order' => 'nullable|string',
             // 'description_search' => 'nullable|string'
         ];
     }

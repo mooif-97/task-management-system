@@ -1,27 +1,36 @@
 const toasterStore = {
     state: () => ({
-        show: false,
-        message: '',
-        type: 'info'
+        toaster: {
+            show: false,
+            title: '',
+            description: '',
+            type: 'info'
+        }
     }),
     mutations: {
-        showToaster(state, { message, type = 'success' }) {
-            state.message = message;
-            state.type = type;
-            state.show = true;
+        showToaster(state, { title, description, type }) {
+            console.log('show toaste mutate')
+            state.toaster.title = title;
+            state.toaster.description = description;
+            state.toaster.type = type;
+            state.toaster.show = true;
         },
         hideToaster(state) {
-            state.show = false;
-            state.message = '';
-        },
+            state.toaster.show = false;
+        }
     },
     actions: {
-        triggerToast({ commit }, { message, type }) {
-            commit('showToast', { message, type });
+        triggerToaster({ commit }, { title, description, type }) {
+            commit('showToaster', { title, description, type });
             setTimeout(() => {
                 commit('hideToaster');
             }, 3000);
         },
+    },
+    getters: {
+        getToaster(state) {
+            return state.toaster
+        }
     }
 };
 
