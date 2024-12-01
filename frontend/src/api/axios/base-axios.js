@@ -2,8 +2,9 @@ import axios from "axios";
 import store from "../../store";
 
 const axiosInstance = axios.create({
-  baseURL: "https://86mwsr-8000.csb.app/api/",
-  timeout: 10000,
+  baseURL: import.meta.env.VITE_APP_BASE_API_URL,
+  // baseURL: "https://6x3dfh-8000.csb.app/api",
+  timeout: 5000,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -13,8 +14,8 @@ const axiosInstance = axios.create({
 // Adding request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    store.commit('setIsLoading', true)
-    const token = store.getters.getToken;
+    store.commit("setIsLoading", true);
+    const token = localStorage.getItem("authToken");
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
@@ -29,25 +30,24 @@ axiosInstance.interceptors.request.use(
 // Adding response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
-    store.commit('setIsLoading', false)
+    store.commit("setIsLoading", false);
     return response;
   },
   (error) => {
-    store.commit('setIsLoading', false)
+    store.commit("setIsLoading", false);
     _handleRequestResponseError(error);
     return Promise.reject(error);
   }
 );
 
 function _handleRequestResponseError(error) {
-  console.log('warn response error', error)
+  console.log("warn response error", error);
   // show toaster to display error message
-  store.dispatch('triggerToaster', {
-    title: 'Error in Request',
-    description: 'hhaha',
-    type: 'error'
-  })
-
+  store.dispatch("triggerToaster", {
+    title: "Error in Request",
+    description: "hhaha",
+    type: "error",
+  });
 }
 
 function _handleRequestSuccess() {}

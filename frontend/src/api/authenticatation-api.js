@@ -1,12 +1,11 @@
 import axiosInstance from "./axios/base-axios";
 
 class Authentication {
-  async loginAndGetToken({ userId, password }) {
-    const loginRes = await axiosInstance.post("api/authenticate", {
-      user_id: userId,
+  async loginAndGetToken({ user_id, password }) {
+    return await axiosInstance.post("authenticate", {
+      user_id,
       password,
     });
-    return loginRes?.token;
   }
 }
 

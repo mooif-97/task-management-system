@@ -1,6 +1,6 @@
 <script setup>
 import { NButton, NTag, NDataTable, NSpace, NPagination } from "naive-ui";
-import { h, ref, watch } from "vue";
+import { h, ref, watch, computed } from "vue";
 
 const emit = defineEmits()
 
@@ -12,6 +12,9 @@ const props = defineProps({
   tableData: {
     type: Array,
     required: true
+  },
+  pageDetails: {
+    type: Object
   }
 })
 
@@ -26,7 +29,7 @@ const tableColumns = Object.freeze([
   },
   {
     title: "Created Date",
-    key: "created_date"
+    key: "created_at"
   },
   {
     title: "Due Date",
@@ -78,46 +81,18 @@ const tableColumns = Object.freeze([
   }
 ]);
 
-const totalItemCount = ref(190)
+const totalItemCount = computed(() => props.pageDetails?.total ?? 0)
 const currentPage = ref(1)
 const pageSize = ref(10)
 
-function emitPaginationChanged(data){
+function emitPaginationChanged(data) {
   emit('pagination-changed', data)
 }
 
 watch([currentPage, pageSize], (newValues) => {
-  console.log('Page changed to:', newValues);
   // emit new page details for search tasks again
-  emitPaginationChanged({page: newValues[0], page_size: newValues[1]})
+  emitPaginationChanged({ page: newValues[0], page_size: newValues[1] })
 });
-
-// const tableData = [
-//   {
-//     task_id: 0,
-//     title: "John Brown",
-//     description: "John Brown",
-//     status: "Overdue",
-//     created_date: "2024-11-29T08:42:29.505Z",
-//     due_date: "2024-11-29T08:42:29.505Z"
-//   },
-//   {
-//     task_id: 1,
-//     title: "John Brown",
-//     description: "John Hello",
-//     status: "Not Urgent",
-//     created_date: "2024-11-29T08:42:29.505Z",
-//     due_date: "2024-11-29T08:42:29.505Z"
-//   },
-//   {
-//     key: 2,
-//     title: "John Black",
-//     description: "John Hello",
-//     status: "Due Soon",
-//     created_date: "2024-11-29T08:42:29.505Z",
-//     due_date: "2024-11-29T08:42:29.505Z"
-//   }
-// ]
 </script>
 
 <template>
@@ -125,7 +100,7 @@ watch([currentPage, pageSize], (newValues) => {
     <n-data-table :single-line="false" :columns="tableColumns" :data="tableData" />
     <n-space>
       <n-pagination v-model:page="currentPage" v-model:page-size="pageSize" :item-count="totalItemCount"
-        :page-sizes="[10, 20, 30, 40]" :disabled="$store.getters.isLoading" show-size-picker />
+        :page-sizes="[5, 10, 20, 30, 40]" :disabled="$store.getters.isLoading" show-size-picker />
       <div>Total Item: {{ totalItemCount }}</div>
     </n-space>
   </n-space>

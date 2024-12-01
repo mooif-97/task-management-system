@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Pagination\Paginator;
 use App\Http\Resources\TaskResource;
 
 class Task extends Model
 {
+    use HasFactory; 
+
     // auto increment PK
     protected $primaryKey = 'task_id';
     protected $keyType = 'int'; // Data type of the key

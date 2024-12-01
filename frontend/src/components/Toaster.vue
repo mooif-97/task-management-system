@@ -44,11 +44,6 @@
 //       //   store.commit('hideNotification');
 //     }
 
-//     watch(() => {
-//       if (toaster.value.show) {
-//         showNotification(toaster.value);
-//       }
-//     });
 //     return {
 //       showNotification,
 //     }
