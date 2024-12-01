@@ -15,7 +15,4 @@ docker run --rm --name ${containerName} -e POSTGRES_PASSWORD=${dbPass} -e POSTGR
 sleep 5
 php artisan migrate
 
-sleep 5
-php artisan db:seed
-
 echo -e "\\nTo stop the database, execute: docker stop ${containerName}\\n"
