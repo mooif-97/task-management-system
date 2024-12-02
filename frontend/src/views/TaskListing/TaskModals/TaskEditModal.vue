@@ -1,14 +1,14 @@
 <script setup>
 import { NModal, NInput, NSpace, NDatePicker, NButton } from 'naive-ui';
 import { useStore } from 'vuex';
-import { computed, defineProps, ref, defineEmits, watch, onMounted } from 'vue'
+import { computed, defineProps, ref, defineEmits, watch } from 'vue'
 
 const props = defineProps({
     taskAction: {
         type: String,
         required: true
     },
-    editTaskForm: {
+    selectedTask: {
         type: Object
     }
 })
@@ -22,21 +22,17 @@ const baseForm = Object.freeze({
     due_date: null,
     created_by: store.getters.getUserId || 'unknown_user'
 })
-const taskForm = ref({ ...baseForm, ...props.editTaskForm })
+const taskForm = ref({ ...baseForm, ...props.selectedTask })
 
 const showModal = computed(() => store.getters.getModal('taskEditModal'));
-const modalTitle = computed(() => props.taskAction === 'CREATE' ? 'Create new task' : 'Edit current task')
+const modalTitle = computed(() => props.taskAction === 'CREATE' ? 'Create new task' : 'Edit existing task')
 const formInvalid = computed(() => !taskForm.value?.title || !taskForm.value.description)
 
-watch([props.editTaskForm], (newValues) => {
+watch(() => props.selectedTask, (newVal) => {
     // patch edit task form when edit button is clicked
-    console.log('watch', newValues)
-    populateFormValues(newValues);
+    populateFormValues(newVal);
 }, { deep: true });
 
-onMounted(() => {
-    console.log('mount...')
-})
 
 function closeModal() {
     store.dispatch('hideModal', 'taskEditModal')
