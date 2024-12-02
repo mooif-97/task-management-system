@@ -85,9 +85,7 @@ function applyFilterAndEmitCriteria() {
 
             <n-space :style="{ 'padding-left': '2rem' }">
                 <n-button type="primary" @click="applyFilterAndEmitCriteria" size="small" :disabled="isLoading"
-                    round>Apply
-                <n-button @click="applyFilterAndEmitCriteria" size="small" :disabled="isLoading" round>Apply
-                    Filter</n-button>
+                    round>Apply Filter</n-button>
             </n-space>
         </n-space>
     </n-card>
