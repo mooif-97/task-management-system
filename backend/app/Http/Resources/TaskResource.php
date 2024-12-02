@@ -42,8 +42,7 @@ class TaskResource extends JsonResource
             return 'Overdue';
         }
 
-        $diffDays = $now->diffInDays($dueDate, false);
-        if ($diffDays >= 0 && $diffDays < 7) {
+        if ($dueDate->diffInDays($now) <= 7) {
             return 'Due Soon';
         }
 

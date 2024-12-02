@@ -30,7 +30,5 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Task::factory()->count(10)->create();
-
-        // factory(Task::class, 10)->create();
     }
 }

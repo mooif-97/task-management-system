@@ -46,7 +46,6 @@ async function handleTaskEdit(taskForm) {
   const requestBody = ['title', 'description', 'due_date'].reduce((reqBody, key) => {
     return { ...reqBody, [key]: taskForm[key] }
   }, {})
-
   const taskId = taskForEdit.value?.task_id;
   const res = await taskApi.updateTask(taskId, requestBody);
   if (res.status === 200) (
@@ -97,7 +96,7 @@ onMounted(() => {
     @pagination-changed="handlePaginationChanged" />
 
   <!--Modals-->
-  <task-edit-modal :task-action="taskAction" :edit-task-form="taskForEdit" @task-CREATE="handleTaskCreation"
+ <task-edit-modal :task-action="taskAction" :edit-task-form="taskForEdit" @task-CREATE="handleTaskCreation"
     @task-EDIT="handleTaskEdit" />
 </template>
 
