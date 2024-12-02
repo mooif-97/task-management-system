@@ -32,10 +32,9 @@ class TaskFilterRequest extends FormRequest
             'page' => 'nullable|numeric|min:1',
             'page_size' => 'nullable|numeric|min:1',
             'title_search' => 'nullable|string',
-            'excact_title_search' => 'nullable|boolean',
+            'exact_title_search' => 'nullable|boolean',
             'order_by' => 'nullable|string',
             'order' => 'nullable|string',
-            // 'description_search' => 'nullable|string'
         ];
     }
 }

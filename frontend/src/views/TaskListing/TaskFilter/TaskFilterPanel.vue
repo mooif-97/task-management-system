@@ -1,7 +1,7 @@
 <script setup>
 import { NSpace, NDropdown, NButton, NCard, NInput, NCheckbox } from 'naive-ui'
 import { useStore } from 'vuex';
-import { h, ref, computed } from 'vue'
+import { ref, computed } from 'vue'
 
 const store = useStore()
 const emit = defineEmits()
@@ -11,20 +11,20 @@ const orderByOptions = [
         label: 'None',
         key: ''
     },
-    {
-        label: 'Task Title',
-        key: 'title'
-    },
-    {
-        label: 'Task Description',
-        key: 'description'
-    },
+    // {
+    //     label: 'Task Title',
+    //     key: 'title'
+    // },
+    // {
+    //     label: 'Task Description',
+    //     key: 'description'
+    // },
     {
         label: 'Created Date',
         key: 'created_at'
     },
     {
-        label: 'Due Date',
+        label: 'Due Date (As)',
         key: 'due_date'
     }
 ]
@@ -32,11 +32,11 @@ const orderByOptions = [
 const orderOptions = [
     {
         label: 'Ascending',
-        key: 'ascending'
+        key: 'asc'
     },
     {
         label: 'Descending',
-        key: 'descending'
+        key: 'desc'
     }
 ]
 
@@ -54,8 +54,7 @@ function handleSelect(formKey, value) {
 }
 
 function applyFilterAndEmitCriteria() {
-    console.log(taskFilterForm.value)
-    emit('search-tasks-with-filter', taskFilterForm.value)
+    emit('apply-search-filter', taskFilterForm.value)
 }
 </script>
 
@@ -80,12 +79,13 @@ function applyFilterAndEmitCriteria() {
                 <n-dropdown trigger="click" :options="orderOptions" @select="(key) => handleSelect('order', key)">
                     <n-button size="tiny" :disabled="isLoading || !taskFilterForm.order_by">Order: {{
                         taskFilterForm.order
-                        }}</n-button>
+                    }}</n-button>
                 </n-dropdown>
             </n-space>
 
             <n-space :style="{ 'padding-left': '2rem' }">
-                <n-button @click="applyFilterAndEmitCriteria" size="small" :disabled="isLoading" round>Apply
+                <n-button type="primary" @click="applyFilterAndEmitCriteria" size="small" :disabled="isLoading"
+                    round>Apply
                     Filter</n-button>
             </n-space>
         </n-space>
