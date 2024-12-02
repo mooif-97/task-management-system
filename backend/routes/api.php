@@ -10,9 +10,9 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 // Route::middleware('auth:sanctum')->apiResource("items", TaskController::class);
-Route::middleware('auth:sanctum')->post('/items-by-pagination', [TaskController::class, 'index']);
-Route::middleware('auth:sanctum')->post('/items', [TaskController::class, 'store']);
-Route::middleware('auth:sanctum')->patch('/items', [TaskController::class, 'update']);
+Route::middleware('auth:sanctum')->post('/tasks-by-pagination', [TaskController::class, 'index']);
+Route::middleware('auth:sanctum')->post('/tasks', [TaskController::class, 'store']);
+Route::middleware('auth:sanctum')->put('/tasks/{tasks_id}', [TaskController::class, 'update']);
 
 // user login and generate token
 Route::post('/authenticate', [TokenController::class, 'authenticate']);

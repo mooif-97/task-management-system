@@ -71,7 +71,7 @@ const tableColumns = Object.freeze([
           size: "small",
           onClick: () => {
             if (props.editFunction) {
-              props.editFunction('EDIT')
+              props.editFunction('EDIT', row)
             }
           }
         },
