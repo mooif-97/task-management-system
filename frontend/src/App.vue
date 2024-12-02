@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue';
 import { NConfigProvider } from 'naive-ui';
-import Toaster from './components/Toaster.vue';
 
 const theme = ref({
 });
@@ -10,9 +9,7 @@ const theme = ref({
 <template>
   <n-config-provider :theme="theme">
     <router-view />
-    <!-- <toaster/> -->
   </n-config-provider>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

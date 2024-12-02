@@ -11,19 +11,24 @@ const store = useStore()
 
 const isLoading = computed(() => store.getters.isLoading)
 
+// task edit modal refs
 const taskAction = ref('CREATE')
-const taskForEdit = ref({})
+const selectedTask = ref({})
+
+// task filter refs
 const taskFilterForm = ref({})
+
+// table refs
 const tableData = ref([])
 const pageDetails = ref({})
 
-function showEditModal(_taskAction, _taskForEdit = {}) {
+function showEditModal(_taskAction, _selectedTask = {}) {
   store.dispatch('showModal', 'taskEditModal')
   taskAction.value = _taskAction
-  taskForEdit.value = {
-    ..._taskForEdit, due_date: convertIsoToDate(_taskForEdit?.due_date)
+  selectedTask.value = {
+    ..._selectedTask, due_date: convertIsoToDate(_selectedTask?.due_date)
   }
-  console.log('emit new formatted', taskForEdit.value)
+  console.log('emit new formatted', selectedTask.value, _taskAction)
 }
 
 function convertIsoToDate(isoDate) {
@@ -33,7 +38,6 @@ function convertIsoToDate(isoDate) {
 
 // task APIS
 async function handleTaskCreation(taskForm) {
-  console.log('create', taskForm)
   const res = await taskApi.createTask(taskForm)
   if (res.status === 201) (
     // do a fetch after create/update
@@ -46,7 +50,7 @@ async function handleTaskEdit(taskForm) {
   const requestBody = ['title', 'description', 'due_date'].reduce((reqBody, key) => {
     return { ...reqBody, [key]: taskForm[key] }
   }, {})
-  const taskId = taskForEdit.value?.task_id;
+  const taskId = selectedTask.value?.task_id;
   const res = await taskApi.updateTask(taskId, requestBody);
   if (res.status === 200) (
     // do a fetch after create/update
@@ -59,8 +63,13 @@ async function getTaskByFilterAndPagination() {
   // get success
   if (res.status === 200) {
     const { data, page_details } = res?.data ?? {}
+    const description = `Query success. Returned ${page_details?.total ?? 0} items.`
     tableData.value = data
     pageDetails.value = page_details
+    store.dispatch("triggerMessage", {
+      description,
+      actionType: "info",
+    });
   }
 }
 
@@ -92,11 +101,12 @@ onMounted(() => {
   </n-card>
 
   <!--Table-->
-  <task-listing-table :table-data="tableData" :edit-function="showEditModal" :page-details="pageDetails"
+  <!--When edit button is clicked, it will pass the selectedTask object into task-edit-modal as props, then populate the selectedTask values-->
+  <task-listing-table :table-data="tableData" @edit-row="(e) => showEditModal('EDIT', e)" :page-details="pageDetails"
     @pagination-changed="handlePaginationChanged" />
 
   <!--Modals-->
- <task-edit-modal :task-action="taskAction" :edit-task-form="taskForEdit" @task-CREATE="handleTaskCreation"
+  <task-edit-modal :task-action="taskAction" v-model:selected-task="selectedTask" @task-CREATE="handleTaskCreation"
     @task-EDIT="handleTaskEdit" />
 </template>
 

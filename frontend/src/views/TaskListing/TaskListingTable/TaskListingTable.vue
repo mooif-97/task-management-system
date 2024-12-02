@@ -5,10 +5,6 @@ import { h, ref, watch, computed } from "vue";
 const emit = defineEmits()
 
 const props = defineProps({
-  editFunction: {
-    type: Function,
-    required: true
-  },
   tableData: {
     type: Array,
     required: true
@@ -69,11 +65,7 @@ const tableColumns = Object.freeze([
         NButton,
         {
           size: "small",
-          onClick: () => {
-            if (props.editFunction) {
-              props.editFunction('EDIT', row)
-            }
-          }
+          onClick: () => emitEditRowClicked(row)
         },
         { default: () => "Edit" }
       );
@@ -85,13 +77,14 @@ const totalItemCount = computed(() => props.pageDetails?.total ?? 0)
 const currentPage = ref(1)
 const pageSize = ref(10)
 
-function emitPaginationChanged(data) {
-  emit('pagination-changed', data)
+
+function emitEditRowClicked(row) {
+  emit('edit-row', row)
 }
 
 watch([currentPage, pageSize], (newValues) => {
   // emit new page details for search tasks again
-  emitPaginationChanged({ page: newValues[0], page_size: newValues[1] })
+  emit('pagination-changed', { page: newValues[0], page_size: newValues[1] })
 });
 </script>
 

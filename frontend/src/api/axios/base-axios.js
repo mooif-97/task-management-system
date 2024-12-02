@@ -31,6 +31,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => {
     store.commit("setIsLoading", false);
+    _handleRequestSuccess(response);
     return response;
   },
   (error) => {
@@ -41,15 +42,24 @@ axiosInstance.interceptors.response.use(
 );
 
 function _handleRequestResponseError(error) {
-  console.log("warn response error", error);
-  // show toaster to display error message
-  store.dispatch("triggerToaster", {
-    title: "Error in Request",
-    description: "hhaha",
-    type: "error",
+  // treat 404 as warning
+  const actionType = error?.response?.status === 404 ? "warning" : "error"
+  const description = error?.response?.data?.error?.message || error.message;
+  // display error message using n-message
+  store.dispatch("triggerMessage", {
+    description,
+    actionType,
   });
 }
 
-function _handleRequestSuccess() {}
+function _handleRequestSuccess(response) {
+  const description = response?.data?.message;
+  if(description) {
+    store.dispatch("triggerMessage", {
+      description,
+      actionType: "success",
+    });
+  }
+}
 
 export default axiosInstance;
