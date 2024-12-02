@@ -21,6 +21,8 @@ class Task extends Model
 
     private static $defaultPageSize = 10;
     private static $defaultPage = 1;
+    private static $allowedOrderColumns = ['title', 'created_at', 'description', 'due_date'];
+    private static $allowedOrder = ['asc', 'desc'];
 
     public static function getTasksByFilterAndPagination(array $filter)
     {
@@ -29,10 +31,10 @@ class Task extends Model
         $pageSize = $filter['page_size'] ?? self::$defaultPageSize;
         $page = $filter['page'] ?? self::$defaultPage;
 
-        if (isset($filter['title_search'])) {
-            $exactSearch = $filter['excact_title_search'];
+        if (isset($filter['title_search']) && !empty($filter['title_search'])) {
+            $exactSearch = $filter['exact_title_search'];
             // determine whether to use exact search
-            $operator = $exactSearch ? '=' : 'ILIKE';
+            $operator = $exactSearch ? '=' : 'LIKE';
             $value = $exactSearch ? $filter['title_search'] : '%' . $filter['title_search'] . '%';
             $query->where('title', $operator, $value);
         }
@@ -40,6 +42,15 @@ class Task extends Model
         Paginator::currentPageResolver(function () use ($page) {
             return $page;
         });
+
+        if(isset($filter['order_by']) && !empty($filter['order_by']) && in_array($filter['order_by'], self::$allowedOrderColumns)){
+            // default order to asc if order value is invalid
+            $order = isset($filter['order']) && !empty($filter['order']) && in_array($filter['order'], self::$allowedOrder) ? $filter['order'] : 'asc';
+            $query->orderBy($filter['order_by'], $order);
+        } else {
+            // lets default order by due_date asc
+            $query->orderBy('due_date', 'asc');
+        }
 
         $tasks = $query->paginate($pageSize);
 
