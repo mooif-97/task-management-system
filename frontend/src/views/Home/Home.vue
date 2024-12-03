@@ -17,7 +17,7 @@ onMounted(() => {
 
 // auto redirect if token is found and valid..
 watch(authenticated, (newValues) => {
-  if (authenticated) {
+  if (newValues) {
     router.push('task-listing');
   }
 });

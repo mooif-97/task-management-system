@@ -6,7 +6,7 @@ class TaskApi {
   }
 
   async createTask(requestBody) {
-    const formattedReqBody = this._formatRequestBody(requestBody);
+    const formattedReqBody = {...this._formatRequestBody(requestBody), created_by: localStorage.getItem('userId') || 'unknown-user'};
     return await axiosInstance.post("tasks", formattedReqBody);
   }
 

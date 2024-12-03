@@ -29,6 +29,10 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('test1234')
         ]);
 
+        // $connection = DB::getDefaultConnection();  // Get the default connection
+        // $databaseType = DB::connection($connection)->getDriverName();  // Get the DB driver (e.g., mysql, pgsql)
+        // echo 'my db is ', $connection;
+
         Task::factory()->count(10)->create();
     }
 }
