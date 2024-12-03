@@ -46,10 +46,17 @@ class Task extends Model
         if(isset($filter['order_by']) && !empty($filter['order_by']) && in_array($filter['order_by'], self::$allowedOrderColumns)){
             // default order to asc if order value is invalid
             $order = isset($filter['order']) && !empty($filter['order']) && in_array($filter['order'], self::$allowedOrder) ? $filter['order'] : 'asc';
-            $query->orderBy($filter['order_by'], $order);
+            // make timestamp columns appear last if its value is null
+            if (in_array($filter['order_by'], ['created_at', 'due_date'])){
+                $query->orderByRaw("{$filter['order_by']} IS NULL, {$filter['order_by']} {$order}");
+            }
+            else {
+                $query->orderBy($filter['order_by'], $order);
+            }
+            
         } else {
             // lets default order by due_date asc
-            $query->orderBy('due_date', 'asc');
+            $query->orderByRaw('due_date IS NULL, due_date ASC');
         }
 
         $tasks = $query->paginate($pageSize);

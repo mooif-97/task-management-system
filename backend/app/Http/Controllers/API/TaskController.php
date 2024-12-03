@@ -50,7 +50,7 @@ class TaskController extends Controller
 
         $task->update($request->validated());
 
-        return response()->json($task);
+        return response()->json(['message' => "Task with Task ID[$task_id] updated successfully.", 'item' => $task]);
     }
 
     /**
