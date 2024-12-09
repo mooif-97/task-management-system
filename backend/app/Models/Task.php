@@ -32,7 +32,7 @@ class Task extends Model
         $page = $filter['page'] ?? self::$defaultPage;
 
         if (isset($filter['title_search']) && !empty($filter['title_search'])) {
-            $exactSearch = $filter['exact_title_search'];
+            $exactSearch = isset($filter['exact_title_search']) ? $filter['exact_title_search'] : false;
             // determine whether to use exact search
             $operator = $exactSearch ? '=' : 'LIKE';
             $value = $exactSearch ? $filter['title_search'] : '%' . $filter['title_search'] . '%';

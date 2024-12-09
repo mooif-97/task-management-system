@@ -59,7 +59,7 @@ async function handleTaskEdit(taskForm) {
 }
 
 async function getTaskByFilterAndPagination() {
-  const res = await taskApi.getTasksByFilterAndPagination(taskFilterForm.value)
+    const res = await taskApi.getTasksByFilterAndPagination(taskFilterForm.value)
   // get success
   if (res.status === 200) {
     const { data, page_details } = res?.data ?? {}

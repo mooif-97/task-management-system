@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\ValidationException;
 
 class TaskFilterRequest extends FormRequest
 {
@@ -37,4 +38,14 @@ class TaskFilterRequest extends FormRequest
             'order' => 'nullable|string',
         ];
     }
+
+        // Override the failedValidation method
+        protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+        {
+            // Throw the validation exception and return a JSON response
+            throw new ValidationException(
+                $validator,
+                response()->json(['errors' => $validator->errors()], 422)
+            );
+        }
 }
