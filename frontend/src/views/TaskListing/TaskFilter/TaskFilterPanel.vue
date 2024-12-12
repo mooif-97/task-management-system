@@ -64,7 +64,7 @@ function applyFilterAndEmitCriteria() {
             <!-- title search -->
             <n-space>
                 <n-input v-model:value="taskFilterForm.title_search" type="text" size="small"
-                    placeholder="Search By title" :disabled="isLoading" />
+                    placeholder="Search By title" :disabled="isLoading" clearable/>
                 <n-checkbox @click="taskFilterForm.exact_title_search = !taskFilterForm.exact_title_search"
                     :disabled="isLoading">
                     Exact match?

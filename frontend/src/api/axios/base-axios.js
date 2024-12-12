@@ -44,7 +44,7 @@ axiosInstance.interceptors.response.use(
 function _handleRequestResponseError(error) {
   // treat 404 as warning
   const actionType = error?.response?.status === 404 ? "warning" : "error"
-  const description = error?.response?.data?.error?.message || error.message;
+  const description = error?.response?.data?.message || error.message;
   // display error message using n-message
   store.dispatch("triggerMessage", {
     description,

@@ -8,6 +8,7 @@ use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Models\Task;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\JsonResponse;
 
 class TaskController extends Controller
 {
@@ -36,7 +37,11 @@ class TaskController extends Controller
      */
     function show($task_id)
     {
-        $task = $this->searchTaskByTaskId($task_id);
+        $task = $this->searchTaskByTaskIdOrFail($task_id);
+        if ($task instanceof JsonResponse) {
+            // return 404 and error message if task is not found
+           return $task;
+        }
 
         return response()->json($task);
     }
@@ -46,11 +51,15 @@ class TaskController extends Controller
      */
     function update(TaskUpdateRequest $request, string $task_id)
     {
-        $task = $this->searchTaskByTaskId($task_id);
+        $task = $this->searchTaskByTaskIdOrFail($task_id);
+        if ($task instanceof JsonResponse) {
+             // return 404 and error message if task is not found
+            return $task;
+        }
 
         $task->update($request->validated());
 
-        return response()->json(['message' => "Task with Task ID[$task_id] updated successfully.", 'item' => $task]);
+        return response()->json(['message' => "Task with [Task ID: $task_id] updated successfully.", 'item' => $task]);
     }
 
     /**
@@ -58,12 +67,19 @@ class TaskController extends Controller
      */
     function destroy(string $task_id)
     {
-        //
+        $task = $this->searchTaskByTaskIdOrFail($task_id);
+        if ($task instanceof JsonResponse) {
+            // return 404 and error message if task is not found
+           return $task;
+       }
+
+        Task::destroy($task_id);
+        return response()->json(['message' => "Task with [Task ID: $task_id] deleted successfully."]);
     }
 
-    private function searchTaskByTaskId(string $task_id)
+    private function searchTaskByTaskIdOrFail(string $task_id)
     {
-        $task = Task::where('task_id', $task_id)->first();
+        $task = Task::find($task_id);
         if (!$task) {
             return response()->json(['message' => "Task with [Task ID: {$task_id}] is not found."], 404);
         }

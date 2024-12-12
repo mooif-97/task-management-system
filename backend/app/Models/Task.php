@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
 use App\Http\Resources\TaskResource;
 
 class Task extends Model
@@ -34,7 +35,8 @@ class Task extends Model
         if (isset($filter['title_search']) && !empty($filter['title_search'])) {
             $exactSearch = isset($filter['exact_title_search']) ? $filter['exact_title_search'] : false;
             // determine whether to use exact search
-            $operator = $exactSearch ? '=' : 'LIKE';
+            // LIKE operator is different by DB type
+            $operator = $exactSearch ? '=' : (DB::getDriverName() == 'pgsql' ? 'ILIKE' : 'LIKE');
             $value = $exactSearch ? $filter['title_search'] : '%' . $filter['title_search'] . '%';
             $query->where('title', $operator, $value);
         }

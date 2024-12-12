@@ -16,7 +16,7 @@ const props = defineProps({
 
 const tableColumns = Object.freeze([
   {
-    title: "Task Title",
+    title: "Task Name",
     key: "title"
   },
   {

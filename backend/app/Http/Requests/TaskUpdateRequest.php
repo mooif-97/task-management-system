@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Contracts\Validation\Validator;
 
 class TaskUpdateRequest extends FormRequest
 {
@@ -22,10 +24,19 @@ class TaskUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'nullable|string|max:255',
-            'description' => 'nullable|string|max:1000',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:1000',
             // due_date validated as ISO 8601 format to streamline input from FE and to DB
             'due_date' => 'nullable|regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        // Throw the validation exception and return a JSON response
+        throw new ValidationException(
+            $validator,
+            response()->json(['errors' => $validator->errors()], 422)
+        );
     }
 }
