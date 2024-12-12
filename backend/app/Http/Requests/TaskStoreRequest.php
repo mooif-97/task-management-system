@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Contracts\Validation\Validator;
 
 class TaskStoreRequest extends FormRequest
 {
@@ -26,7 +28,16 @@ class TaskStoreRequest extends FormRequest
             'description' => 'required|string|max:1000',
             // due_date validated as ISO 8601 format to streamline input from FE and to DB
             'due_date' => 'nullable|regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/',
-            'created_by' => 'required|string|max:255'
+            'created_by' => 'nullable|string|max:255'
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        // Throw the validation exception and return a JSON response
+        throw new ValidationException(
+            $validator,
+            response()->json(['errors' => $validator->errors()], 422)
+        );
     }
 }

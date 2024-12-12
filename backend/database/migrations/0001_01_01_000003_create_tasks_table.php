@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('title')->index('title_index');
             $table->string('description');
             $table->string('created_by')->nullable();
-            $table->timestamp('due_date')->nullable()->index('due_date_index');
+            $table->timestamp('due_date')->nullable();
             $table->timestamps();
+            $table->index(['due_date', 'created_at']);
         });
     }
 

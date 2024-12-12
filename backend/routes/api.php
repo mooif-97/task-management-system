@@ -18,10 +18,11 @@ Route::middleware('throttle:global')->group(function () {
     Route::middleware('auth:sanctum')->post('/tasks-by-pagination', [TaskController::class, 'index']);
     Route::middleware('auth:sanctum')->post('/tasks', [TaskController::class, 'store']);
     Route::middleware('auth:sanctum')->put('/tasks/{tasks_id}', [TaskController::class, 'update']);
-    // user login and generate token
+    Route::middleware('auth:sanctum')->delete('/tasks/{tasks_id}', [TaskController::class, 'destroy']);
 });
 
 Route::middleware('throttle:auth')->group(function () {
+    // user login and generate token
     Route::post('/authenticate', [TokenController::class, 'authenticate']);
     // Route::post('/login', [TokenController::class, 'authenticate']);
 });
