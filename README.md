@@ -15,5 +15,13 @@ Start frontend/
 3. If its the first time to startup frontend/, its required to run `npm install`.
 
 **Note:** 
-1. In frontend/ directory, add environment variable `VITE_APP_BASE_API_URL` for API calls. 
-2. Set the value to the exposed url of the running backend/ application with the format `${exposed URL}/api/`. Example: `https://6x3dfh-8000.csb.app/api/`, or refer to .env-example
+1. In frontend/ directory, add environment variable `VITE_APP_BASE_API_URL` for API calls in a .env file. 
+2. Set the value to the exposed url of the running backend/ application with the format `${exposed URL}/api/`. Example: `https://6x3dfh-8000.csb.app/api/`, `http://127.0.0.1:8000/api`, or refer to .env-example
+3. In backend/ directory, add environment variable for postgres sql connection in a .env file.
+4. Add these below environment variables into the .env file in backend/ directory:
+   ` DB_CONNECTION=pgsql`
+   ` DB_HOST=127.0.0.1`
+   ` DB_PORT=5500`
+   ` DB_DATABASE=example_app_db`
+   ` DB_USERNAME=veve`
+   ` DB_PASSWORD=veve`
